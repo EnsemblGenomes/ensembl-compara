@@ -98,6 +98,7 @@ sub fetch_input {
 	my $prev_gene_member_adaptor = $previous_compara_dba->get_GeneMemberAdaptor;
 	my $prev_mlss_id;
 	my @homology_mapping;
+	my $prev_mlss_id;
 	foreach my $hid ( @homology_ids ) {
 		my $curr_homology = $current_homo_adaptor->fetch_by_dbID( $hid );
 		next unless $curr_homology;
@@ -110,7 +111,7 @@ sub fetch_input {
 		}
 
 		my $prev_homology_id; # should be left undef if 2 gene members are not found
-		my $prev_mlss_id;
+		
 		if ( scalar @prev_gene_members == 2 ) {
 			my $prev_homology = $previous_homo_adaptor->fetch_by_Member_Member( @prev_gene_members );
 			$prev_homology_id = defined $prev_homology ? $prev_homology->dbID : undef;
