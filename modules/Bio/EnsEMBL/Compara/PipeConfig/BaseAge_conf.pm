@@ -61,60 +61,54 @@ sub default_options {
             'name' => "name",
 
             #Location url of database to get EPO GenomicAlignTree objects from
-#            'compara_url' => 'mysql://ensro@ens-livemirror:3306/ensembl_compara_' . $self->o('ensembl_release'),
-            'compara_url' => 'mysql://ensro@compara3:3306/cc21_mammals_epo_pt3_86',
+#            'compara_url' => 'mysql://anonymous@mysql-ensembl-mirror:4240/ensembl_compara_' . $self->o('ensembl_release'),
+            'compara_url' => 'mysql://ensro@mysql-ens-compara-prod-3:4523/cc21_mammals_epo_pt3_86',
             'clade_taxon_id' => 9443,   # this is the taxon_id of Primates
 
             #Location url of database to get snps from
-            #'variation_url' => 'mysql://ensro@ens-livemirror:3306/' . $self->o('release'),
-            'variation_url' => 'mysql://ensro@ens-staging1:3306/homo_sapiens_variation_86_38?group=variation',
+            #'variation_url' => 'mysql://anonymous@mysql-ensembl-mirror:4240/' . $self->o('ensembl_release'),
+            'variation_url' => 'mysql://ensro@mysql-ens-sta-1:4519/homo_sapiens_variation_86_38?group=variation',
             
             #Location details of ancestral sequences database
-            #'anc_host'   => 'ens-livemirror',
-            'anc_host'   => 'compara4',
+            #'anc_host'   => 'mysql-ensembl-mirror',
+            'anc_host'   => 'mysql-ens-compara-prod-2',
             'anc_name'   => 'ancestral_sequences',
             #'anc_dbname' => 'ensembl_ancestral_' . $self->o('ensembl_release'),
             'anc_dbname' => 'cc21_mammals_ancestral_core_86',
-            'anc_user'  => 'ensro',
-            'anc_port'  => 3306,
+            'anc_user'  => 'anonymous',
+            'anc_port'  => 4522,
 
             #Connection parameters for production database (the rest is defined in the base class)
-            'host' => 'compara1',
+            'host' => 'mysql-ens-compara-prod-1',
+            'port' => 4485,
 
-            'master_db' => 'mysql://ensro@compara1/mm14_ensembl_compara_master',
+            'master_db' => 'mysql://ensro@mysql-ens-compara-prod-1:4485/mm14_ensembl_compara_master',
 
-            'staging_loc1' => {
-                               -host   => 'ens-staging1',
-                               -port   => 3306,
+            'staging_loc' => {
+                               -host   => 'mysql-ens-sta-1',
+                               -port   => 4519,
                                -user   => 'ensro',
                                -pass   => '',
                                -db_version => $self->o('ensembl_release'),
                               },
-            'staging_loc2' => {
-                               -host   => 'ens-staging2',
-                               -port   => 3306,
-                               -user   => 'ensro',
-                               -pass   => '',
-                               -db_version => $self->o('ensembl_release'),
-                              },  
             'livemirror_loc' => {
-                                 -host   => 'ens-livemirror',
-                                 -port   => 3306,
-                                 -user   => 'ensro',
+                                 -host   => 'mysql-ensembl-mirror',
+                                 -port   => 4240,
+                                 -user   => 'anonymous',
                                  -pass   => '',
                                  -db_version => $self->o('ensembl_release'),
                                 },
 
-            'curr_core_sources_locs'    => [ $self->o('staging_loc1'), $self->o('staging_loc2'), ],
+            'curr_core_sources_locs'    => [ $self->o('staging_loc') ],
 #            'curr_core_sources_locs'    => [ $self->o('livemirror_loc') ],
 
             # executable locations:
             'populate_new_database_exe' => $self->o('ensembl_cvs_root_dir')."/ensembl-compara/scripts/pipeline/populate_new_database.pl",
-            'big_bed_exe' => '/software/ensembl/funcgen/bedToBigBed',
+            'big_bed_exe' => '/nfs/software/ensembl/RHEL7/linuxbrew/bin/bedToBigBed',
             'baseage_autosql' => $self->o('ensembl_cvs_root_dir')."/ensembl-compara/scripts/pipeline/baseage_autosql.as",
 
             #Locations to write output files
-            'bed_dir'        => sprintf('/lustre/scratch109/ensembl/%s/%s', $ENV{USER}, $self->o('pipeline_name')),
+            'bed_dir'        => sprintf('/hps/nobackup/production/ensembl/%s/%s', $ENV{USER}, $self->o('pipeline_name')),
             'chr_sizes_file' => 'chrom.sizes',
             'big_bed_file'   => 'base_age'.$self->o('ensembl_release').'.bb',
 
